@@ -28,6 +28,7 @@ public class LibraryProject {
 		System.out.println();
 		Library library = new Library("Test Library", numberOfShelves, shelfCapacity);
 		library.displayCountPerShelf();
+		/* 
 		library.printAllBooks();
 		library.displayOldest();
 		// Row 0
@@ -56,7 +57,7 @@ public class LibraryProject {
 		library.addBook(new Book("Extra Title", "Extra Author", 2024)); // should trigger "full" message
 		library.displayCountPerShelf();
 		library.printAllBooks();
-		library.displayOldest(); 
+		library.displayOldest(); */
 		
 	}// end main
 }
@@ -162,7 +163,7 @@ class Library {
 		
 	}
 	
-	String printAllBooks() {
+	/* String printAllBooks() {
 		for (int i = 0; i < shelfCapacity; i++) {
 			for (int j = 0; )
 		}
@@ -172,5 +173,5 @@ class Library {
 	String displayOldest() {
 		// if null not found, take first book year 
 	}
-	
+	*/
 }
