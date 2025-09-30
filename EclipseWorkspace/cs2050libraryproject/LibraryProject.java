@@ -8,7 +8,7 @@
 public class LibraryProject {
 	public static void main(String[] args)
 	{
-		// --- unit test checks for Book ---
+		// --- unit test checks for Book --- //
 		System.out.println("Unit Test Book Class");
 		Book unitTestBook = new Book("Unmasking AI", "Joy Buolamwini", 2023);
 		System.out.println("getTitle():   " + unitTestBook.getTitle());
@@ -17,7 +17,7 @@ public class LibraryProject {
 		System.out.println("stringOfBookDetails():   " + unitTestBook.stringOfBookDetails());
 		System.out.println();
 		
-		// Clear Book unit test, proceeding // 
+		// --- Clear Book unit test, proceeding --- // 
 		
 		System.out.println("Setting up Test Library");
 		int numberOfShelves = 3;
@@ -27,10 +27,17 @@ public class LibraryProject {
 		System.out.println("Total capacity: " + (numberOfShelves * shelfCapacity));
 		System.out.println();
 		Library library = new Library("Test Library", numberOfShelves, shelfCapacity);
-		library.displayCountPerShelf();
-		/* 
+		library.displayCountPerShelf(); 
+		// Creating an EMPTY library 
+		
+		// --- Clear Library with Shelves unit test, proceeding --- // 
+
 		library.printAllBooks();
-		library.displayOldest();
+		// library.displayOldest();
+		
+		// Clear Display All Books unit test, proceeding // 
+		
+		/*
 		// Row 0
 		library.addBook(null);
 		library.addBook(new Book("Unmasking AI", "Joy Buolamwini", 2023));
@@ -56,8 +63,8 @@ public class LibraryProject {
 		System.out.println("Test add more books than capacity...");
 		library.addBook(new Book("Extra Title", "Extra Author", 2024)); // should trigger "full" message
 		library.displayCountPerShelf();
-		library.printAllBooks();
-		library.displayOldest(); */
+		// library.printAllBooks();
+		// library.displayOldest(); */
 		
 	}// end main
 }
@@ -98,6 +105,8 @@ class Book {
 	// Return all Book parameters
 }
 
+
+
 class Library {
 	private String name;
 	private Book[][] bookShelf; 
@@ -119,13 +128,12 @@ class Library {
 		shelfCapacity = newShelfCapacity;
 	}
 	
-	// Library constructor //
+	// Library constructor
 	
 	String getName() {
 		return name;
 	}
 	
-	// THIS IS NOT MY CODE LMAO, STUDY THIS FIRST //
 	public boolean addBook(Book book) {
 		if (book == null){
 			System.out.println("Invalid book.");
@@ -137,7 +145,6 @@ class Library {
 			System.out.println("Library is full. Couldn't add " + book.stringOfBookDetails());
 			return false;
 		}
-		// needs an isFull statement for library, returns false if isFull is true
 		
 		bookShelf[currentShelf][currentSlot] = book;
 		// put a book at array index currentShelf, currentSlot
@@ -159,19 +166,26 @@ class Library {
 		return true;
 	}
 	
-	int displayCountPerShelf() {
-		
+	
+	public void displayCountPerShelf() {
+		for (int row = 0; row < numberOfShelves; row++) {
+		System.out.println (currentTotalBooks);
+		}
 	}
 	
-	/* String printAllBooks() {
-		for (int i = 0; i < shelfCapacity; i++) {
-			for (int j = 0; )
+	public void printAllBooks() {
+		for (int row = 0; row < numberOfShelves; row++) {
+			for (int column = 0; column < shelfCapacity; column++) {
+				System.out.println(Library.bookShelf[row][column]);
+			}
 		}
 		// nested for loops, print each book class in each index
 	}
 	
+	/*  
 	String displayOldest() {
 		// if null not found, take first book year 
 	}
-	*/
+	*/ 
+	
 }
