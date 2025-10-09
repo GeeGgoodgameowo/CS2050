@@ -95,11 +95,6 @@ abstract class Book {
 	private String title;
 	private String author;
 	private int year;
-	/*
-	private String bookType;
-	private int daysLate;
-	private double dailyLateFee;
-	*/
 	// Book parameters (note: private, with getters listed below //
 	
 	
