@@ -10,11 +10,11 @@ public class LibraryProject {
 	{
 		// --- unit test checks for Book --- //
 		System.out.println("Unit Test Book Class");
-		Book unitTestBook = new Book("Unmasking AI", "Joy Buolamwini", 2023);
+		Book unitTestBook = new PrintBook("Unmasking AI", "Joy Buolamwini", 2023);
 		System.out.println("getTitle():   " + unitTestBook.getTitle());
 		System.out.println("getAuthor():  " + unitTestBook.getAuthor());
 		System.out.println("getYear():    " + unitTestBook.getYear());
-		System.out.println("stringOfBookDetails():   " + unitTestBook.stringOfBookDetails());
+		System.out.println("stringOfBookDetails():   " + unitTestBook.toString());
 		System.out.println();
 		
 		// --- Clear Book unit test, proceeding --- // 
@@ -40,75 +40,110 @@ public class LibraryProject {
 
 		// Row 0
 		library.addBook(null);
-		library.addBook(new Book("Unmasking AI", "Joy Buolamwini", 2023));
-		library.addBook(new Book("Hello World", "Hannah Fry", 2018));
-		library.addBook(new Book("Race After Technology", "Ruha Benjamin", 2019));
-		library.addBook(new Book("Deep Learning", "Ian Goodfellow", 2016));
+		library.addBook(new PrintBook("Unmasking AI", "Joy Buolamwini", 2023));
+		library.addBook(new PrintBook("Hello World", "Hannah Fry", 2018));
+		library.addBook(new PrintBook("Race After Technology", "Ruha Benjamin", 2019));
+		library.addBook(new PrintBook("Deep Learning", "Ian Goodfellow", 2016));
 		library.displayCountPerShelf();
 		library.printAllBooks();
 		library.displayOldest();
 		System.out.println();
 		// Row 1
-		library.addBook(new Book("Algorithms to Live By", "Brian Christian", 2016));
-		library.addBook(new Book("Weapons of Math Destruction", "Cathy O'Neil", 2016));
-		library.addBook(new Book("The Mythical Man-Month", "Fred Brooks", 1975));
-		library.addBook(new Book("Refactoring", "Martin Fowler", 1999));
+		library.addBook(new PrintBook("Algorithms to Live By", "Brian Christian", 2016));
+		library.addBook(new PrintBook("Weapons of Math Destruction", "Cathy O'Neil", 2016));
+		library.addBook(new PrintBook("The Mythical Man-Month", "Fred Brooks", 1975));
+		library.addBook(new PrintBook("Refactoring", "Martin Fowler", 1999));
 		System.out.println();
 		// Row 2
-		library.addBook(new Book("The Pragmatic Programmer", "Andrew Hunt & David Thomas", 1999));
-		library.addBook(new Book("Peopleware", "Tom DeMarco & Tim Lister", 1987));
-		library.addBook(new Book("Computer Lib / Dream Machines", "Ted Nelson", 1975));
+		library.addBook(new PrintBook("The Pragmatic Programmer", "Andrew Hunt & David Thomas", 1999));
+		library.addBook(new PrintBook("Peopleware", "Tom DeMarco & Tim Lister", 1987));
+		library.addBook(new PrintBook("Computer Lib / Dream Machines", "Ted Nelson", 1975));
 		library.displayCountPerShelf();
 		System.out.println();
 		library.printAllBooks();
 		library.displayOldest();
 		System.out.println();
 		System.out.println("Test add more books than capacity...");
-		library.addBook(new Book("Filling da Library", "Me, lol", 2025));
-		library.addBook(new Book("Extra Title", "Extra Author", 2024)); // should trigger "full" message
+		library.addBook(new PrintBook("Filling da Library", "Me, lol", 2025));
+		library.addBook(new PrintBook("Extra Title", "Extra Author", 2024)); // should trigger "full" message
 		library.displayCountPerShelf();
 		library.printAllBooks();
 		library.displayOldest(); 
+		// End Test Library, make a new test library for both print books and ebooks
+		
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println("New, mixed Library test:");
+		numberOfShelves = 3;
+		shelfCapacity = 2;
+		Library libraryMix = new Library("Test Mixed Library", numberOfShelves, shelfCapacity);
+		libraryMix.addBook(null);
+		libraryMix.addBook(new PrintBook("Unmasking AI", "Joy Buolamwini", 2023));
+		libraryMix.addBook(new EBook("Experimental EBook", "Me, Myself", 2025));
+		libraryMix.addBook(new PrintBook("Race After Technology", "Ruha Benjamin", 2019));
+		libraryMix.addBook(new EBook("Experimental EBook, The Sequel", "and I", 2025));
+		libraryMix.printAllBooks();
+		libraryMix.displayOldest();
+		
+		
 		
 	}// end main
 }
 	
-class Book {
+abstract class Book {
 	private String title;
 	private String author;
 	private int year;
-
+	/*
+	private String bookType;
+	private int daysLate;
+	private double dailyLateFee;
+	*/
 	// Book parameters (note: private, with getters listed below //
+	
 	
 	public Book(String newTitle, String newAuthor, int newYear) {
 		title = newTitle;
 		author = newAuthor;
 		year = newYear;
 	}
-	
 	// Constructor for the Book //
 	
-	String getTitle() {
+	
+	public String getTitle() {
 		return title;
 	}
 	
-	String getAuthor() {
+	public String getAuthor() {
 		return author;
 	}
 	
-	int getYear() {
+	public int getYear() {
 		return year;
 	}
 	
 	// Getters for Book parameters to follow good encapsulation practice //
 
-	String stringOfBookDetails() {
-		return "\"" + title + "\" by " +  author + " (" + year + ")";	
+	@Override
+	public String toString() {
+		return "\"" + title + "\" by " +  author + " (" + year + ")" + " [Print, " + getLoanDays() + " days, $" + getDailyLateFee() + "/day]";	
 	}
-	
 	// Return all Book parameters
+	
+	public abstract int getLoanDays();
+	public abstract double getDailyLateFee();
+	
+	// Shared behavior using polymorphism
+	/** Calculates the late fee based on subclass policy. */
+	public final double calculateLateFee(int daysLate){
+		double lateFee = 0;
+		if (daysLate > 0){
+			lateFee = daysLate * getDailyLateFee();
+		}
+		return lateFee;
+	}
 }
-
 
 
 class Library {
@@ -157,14 +192,14 @@ class Library {
 		// if the book is invalid in any way, return false
 		
 		if (isFull){
-			System.out.println("Library is full. Couldn't add " + book.stringOfBookDetails());
+			System.out.println("Library is full. Couldn't add " + book.toString());
 			return false;
 		}
 		
 		bookShelf[currentShelf][currentSlot] = book;
 		// put instance of book at array index currentShelf, currentSlot
 		
-		System.out.println("Added " + book.stringOfBookDetails() + " at shelf " + (currentShelf + 1) + ", slot "
+		System.out.println("Added " + book.toString() + " at Shelf " + (currentShelf + 1) + ", Slot "
 				+ (currentSlot + 1));
 		// move cursory slot with statement confirmation
 		
@@ -177,7 +212,6 @@ class Library {
 			int nextIndex = currentTotalBooks; 
 			currentShelf = nextIndex / shelfCapacity;
 			currentSlot = nextIndex % shelfCapacity;
-			System.out.println("" + currentShelf + "" + currentSlot);
 		}
 		return true;
 	}
@@ -204,7 +238,7 @@ class Library {
 		for (int row = 0; row < numberOfShelves; row++) {
 			for (int column = 0; column < shelfCapacity; column++) {
 				if (bookShelf[row][column] != null) {
-					System.out.println (bookShelf[row][column].stringOfBookDetails() + " on Shelf " + (row+1) + " in slot " + (column+1));
+					System.out.println (bookShelf[row][column].toString() + " on Shelf " + (row+1) + " in Slot " + (column+1));
 				
 				}
 			}
@@ -239,16 +273,66 @@ class Library {
 			for (int column = 0; column < shelfCapacity; column ++) {
 				if (bookShelf[row][column] != null) {
 					if (bookShelf[row][column].getYear() == oldestYear)  {
-						System.out.println("Oldest Book: " + bookShelf[row][column].stringOfBookDetails());
+						System.out.println("Oldest Book: " + bookShelf[row][column].toString());
 					}
 				}
 			}
 		}
 		// Finds books with the oldest year and prints them
-	
-	/*
-	class printBook extends Book () {
 	}
-	*/
+}	
+
+class PrintBook extends Book {
+	private String title;
+	private String author;
+	private int year;
+	
+	public PrintBook(String title, String author, int year) {
+		super(title, author, year);
+		this.title = title;
+		this.author = author;
+		this.year = year;
+	}
+	
+	
+	@Override
+	public String toString() {
+		return "\"" + title + "\" by " +  author + " (" + year + ")" + " [Print, " + getLoanDays() + " days, $" + getDailyLateFee() + "/day]";	
+	}
+	@Override
+	public int getLoanDays() {
+		return 21;
+	}
+		
+	@Override
+	public double getDailyLateFee() {
+		return .25;
+	}
+	
+}
+	
+class EBook extends Book {
+	private String title;
+	private String author;
+	private int year;
+	
+	public EBook(String title, String author, int year) {
+		super(title, author, year);
+		this.title = title;
+		this.author = author;
+		this.year = year;
+	}
+	
+	@Override
+	public String toString() {
+		return "\"" + title + "\" by " +  author + " (" + year + ")" + " [EBook, " + getLoanDays() + " days, $" + getDailyLateFee() + "/day]";	
+	}
+		
+	public int getLoanDays() {
+		return 14;
+	}
+		
+	public double getDailyLateFee() {
+		return .10;
 	}
 }
