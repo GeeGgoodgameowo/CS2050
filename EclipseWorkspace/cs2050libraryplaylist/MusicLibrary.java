@@ -19,8 +19,13 @@ public class MusicLibrary {
 		// TODO Auto-generated method stub
 		
 		Scanner scanner = new Scanner(System.in);
+		
 		System.out.println("Name the playlist: ");
 		MusicPlaylist musicPlaylist = new MusicPlaylist(scanner.next());
+		
+		
+		
+		
 		System.out.println("Key CSV file: Project_01.csv");
 		System.out.print("Enter CSV filename: ");
 		CSVLoader.loadFromCsv(musicPlaylist, scanner.next());
@@ -365,13 +370,25 @@ class DisplayMenu {
 			System.out.println("4. Add Song to Up-Next Queue");
 			System.out.println("5. Show Up-Next Queue");
 			System.out.println("6. Play Next from Queue");
-			System.out.println("7. Exit");
-		}
-		
-		
-		
+			System.out.println("7. Exit");		
 }
-
+		/* 
+		DisplayMenu.LoadDisplayMenu();
+		int choice = scanner.nextInt();
+		switch (choice){
+			case 1: 
+				System.out.println("--- Load Songs from CSV ---");
+				System.out.println("Key CSV file: Project_01.csv");
+				System.out.print("Enter CSV filename: ");
+				CSVLoader.loadFromCsv(musicPlaylist, scanner.next());
+				break;
+			}
+			case 2: 
+				System.out.println("--- Display Playlist ---");
+				musicPlaylist.showAllSongs();
+				break;
+			} */
+}
 
 
 
