@@ -19,19 +19,60 @@ public class MusicLibrary {
 		// TODO Auto-generated method stub
 		
 		Scanner scanner = new Scanner(System.in);
+		boolean running = true;
 		
 		System.out.println("Name the playlist: ");
 		MusicPlaylist musicPlaylist = new MusicPlaylist(scanner.next());
+		MusicQueue musicQueue = new MusicQueue(musicPlaylist);
 		
-		
-		
-		
-		System.out.println("Key CSV file: Project_01.csv");
-		System.out.print("Enter CSV filename: ");
-		CSVLoader.loadFromCsv(musicPlaylist, scanner.next());
-		DisplayMenu.LoadDisplayMenu();
-		
-		
+		while (running) {
+			DisplayMenu.LoadDisplayMenu(musicPlaylist);
+			int choice = scanner.nextInt();
+			switch (choice){
+				case 1: 
+					System.out.println("--- Load Songs from CSV ---");
+					System.out.println("Key CSV file: Project_01.csv");
+					System.out.print("Enter CSV filename: ");
+					CSVLoader.loadFromCsv(musicPlaylist, scanner.next());
+					break;
+					
+				case 2: 
+					System.out.println("--- Display Playlist ---");
+					musicPlaylist.showAllSongs();
+					break;
+					
+				case 3:
+					System.out.println("--- Play a Song by Index ---");
+					musicPlaylist.playSong(scanner);
+					break;
+					
+				case 4:
+					System.out.println("--- Add Song to Up-Next Queue ---");
+					musicQueue.addSongQueue();
+					break;
+					
+				case 5:
+					System.out.println("--- Show Up-Next Queue ---");
+					musicQueue.displayQueue();	
+					break;
+					
+				case 6:
+					System.out.println("--- Play Next from Queue ---");
+					musicQueue.playNext(); 
+					break;
+					
+				case 7:
+					System.out.println("--- Exit ---");	
+					running = false;
+					break;
+					
+				default:
+	                System.out.println("Invalid choice. Please try again.");
+				}
+	    		System.out.println(""); // Add a newline for better readability
+			}
+			scanner.close();			
+				
 		/* 
 		System.out.println("Project_01.csv");
 		System.out.print("Enter CSV filename: ");
@@ -66,6 +107,7 @@ public class MusicLibrary {
 class Song {
 	private String name;
 	private String artist;
+	private int size;
 	// private String genre;
 	// private int releaseYear;
 	private int durationSeconds;
@@ -178,10 +220,14 @@ class MusicPlaylist {
 	}
 	// Iterates over size of Playlist, printing object at each index
 	
-	public void playSong() {
+	public void playSong(Scanner choiceInt) {
+		if (songList.size() == 0) {
+			System.out.println("Playlist empty -> import songs.");
+			return;
+		}
+		
 		int nextSongIndex = 0;
 		boolean validInput = false;
-		Scanner choiceInt = new Scanner(System.in);
 		// Secondary scanner specifically for input validation on this method
 		
 		
@@ -203,8 +249,6 @@ class MusicPlaylist {
 				choiceInt.nextLine();
 			}
 		}
-		choiceInt.close();
-		// Close secondary scanner for memory
 	}
 }
 
@@ -215,6 +259,7 @@ class MusicQueue {
 	
 	public MusicQueue(MusicPlaylist songList) {
 		this.songList = songList;
+		
 		head = null;
 		tail = null;
 	}
@@ -223,17 +268,27 @@ class MusicQueue {
 	class Node {
 		Song song;
 		Node next;
+		private String name;
+		private String artist;
+		private String durationMinutes;
+		
 		
 		public Node (Song song) {
 			this.song = song;
+			this.name = song.getName();
+			this.artist = song.getArtist();
+			this.durationMinutes = song.getDuration();
 			this.next = null;
 		}
 		// Node constructor
 	}
 	// Node class for singlylinkedlist dev. Stores Songs
 	
-	
+
 	public void addSongQueue() {
+		if (songList.getSize() == 0) {
+			return;
+		}
 		int nextQueuedIndex = 0;
 		boolean validInput = false;
 		Scanner choiceInt = new Scanner(System.in);
@@ -298,6 +353,7 @@ class MusicQueue {
 		Node removedSong = head;
 		if (head == null) {
 			System.out.println("Queue is empty.");
+			return;
 		} else {
 			head = head.next;
 			if (head == null) {
@@ -306,7 +362,7 @@ class MusicQueue {
 			// Make queue empty if removing song empties queue.
 		}
 		System.out.println(removedSong.toString());
-		System.out.println("Now playing: " + removedSong.toString());
+		System.out.println(removedSong.toString());
 	}
 	
 }
@@ -362,8 +418,8 @@ private static Song parseSongLine(String line, int lineNumber){
 
 
 class DisplayMenu {
-		public static void LoadDisplayMenu() {
-			System.out.println("=== Music Playlist Menu ===");
+		public static void LoadDisplayMenu(MusicPlaylist playlist) {
+			System.out.println("=== \"" + playlist.getName() + "\" Playlist Menu ===");
 			System.out.println("1. Load Songs from CSV");
 			System.out.println("2. Display Playlist");
 			System.out.println("3. Play a Song by Index");
@@ -373,20 +429,7 @@ class DisplayMenu {
 			System.out.println("7. Exit");		
 }
 		/* 
-		DisplayMenu.LoadDisplayMenu();
-		int choice = scanner.nextInt();
-		switch (choice){
-			case 1: 
-				System.out.println("--- Load Songs from CSV ---");
-				System.out.println("Key CSV file: Project_01.csv");
-				System.out.print("Enter CSV filename: ");
-				CSVLoader.loadFromCsv(musicPlaylist, scanner.next());
-				break;
-			}
-			case 2: 
-				System.out.println("--- Display Playlist ---");
-				musicPlaylist.showAllSongs();
-				break;
+		
 			} */
 }
 
